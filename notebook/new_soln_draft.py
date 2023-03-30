@@ -1,7 +1,6 @@
 import pandas as pd
 import json
 import re
-import time
 
 from collections import defaultdict as dd
 from mpi4py import MPI
@@ -167,7 +166,7 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
                     update_stats(tweet_json)
                 # reset tweet
                 tweet = ""
-        # new_line is false: end of file
+        # line is false: end of file
         else:
             break
 
@@ -184,7 +183,6 @@ if rank == 0:
     task1 = list(gcc_stats.items())    
     result_task1 = pd.DataFrame(task1, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
     print(result_task1)
-    print(time.time()- begin.time)
 
 
 # task2 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)

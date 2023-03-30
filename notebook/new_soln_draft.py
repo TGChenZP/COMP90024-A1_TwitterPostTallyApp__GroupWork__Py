@@ -1,8 +1,11 @@
 import pandas as pd
 import json
 import re
-from collections import defaultdict as dd
+import time
 
+from collections import defaultdict as dd
+from mpi4py import MPI
+from collections import Counter
 
 # BEGINNING OF FUNCTIONS
 def get_duplicate_and_non_duplicate_sal_dicts(gcc_sa1):
@@ -132,11 +135,18 @@ user_stats = dict()
 # A dictionary stores the number of tweets made in each Greater Capital cities of Australia.
 gcc_stats = dict()
 
+# get rank and size from MPI for this process
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+size = comm.Get_size()
+
+
 # read the twitter data by readline() to avoid running out of memory
 with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
     tweet = ''
     # the first line of json file is a opening square bracket "[", we skip this line 
     next(f)
+    tweet_index = 0
     while True:
         line = f.readline()
         if line:
@@ -144,13 +154,17 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
             # "  },\n" is the ending for all tweets, excluding the last tweet and the last one has a ending of "  }\n"
             if line not in ["  },\n", "  }\n"]:
                 tweet += line
-            # if reached the end of a tweet, remove the ending ","
+            # if reached the end of a tweet:
             else:
-                tweet += line.split(',')[0]
-                # load json as a dictionary
-                tweet_json = json.loads(tweet)
-                # analyse this tweet and update stats 
-                update_stats(tweet_json)
+                # update the index of the tweet
+                tweet_index += 1
+                # this process will only process tweet with tweet_index%size == rank
+                if tweet_index % size == rank:
+                    tweet += line.split(',')[0]
+                    # load json as a dictionary
+                    tweet_json = json.loads(tweet)
+                    # analyse this tweet and update stats 
+                    update_stats(tweet_json)
                 # reset tweet
                 tweet = ""
         # new_line is false: end of file
@@ -158,19 +172,24 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
             break
 
 
-
-task1 = list(gcc_stats.items())
-
-
-task2 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)
-
-
-task3 = sorted(list(user_stats.items()), key = lambda x:x[1][2], reverse=True)
-
+gcc_stats_list = comm.gather(gcc_stats, root = 0)
+user_stats_list = comm.gather(user_stats, root = 0)
 
 # output for task 1
 # TODO: add (Greater Sydney) to each gcc
-result_task1 = pd.DataFrame(task1, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
-print(result_task1)
+if rank == 0:
+    gcc_stats = Counter()
+    for result in gcc_stats_list:
+        gcc_stats += Counter(result)
+    task1 = list(gcc_stats.items())    
+    result_task1 = pd.DataFrame(task1, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
+    print(result_task1)
+    print(time.time()- begin.time)
+
+
+# task2 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)
+# task3 = sorted(list(user_stats.items()), key = lambda x:x[1][2], reverse=True)
+
+
 
 # TODO: output for task 2 and 3

@@ -94,6 +94,28 @@ def update_stats(tweet_location, author_id):
     else:
         gcc_stats[f'{gcc} ({task2_map[gcc]})'] += 1 # add tweeter count to gcc tally
 
+
+
+def get_number_of_city_locations_and_tweets(obj):
+    out = str()
+    out += str(obj[3])
+    out += ' (#'
+    out += str(obj[1])
+    out += ' tweets - '
+
+    for i in range(len(au_gcc)):
+        if au_gcc[i] in obj[2]:
+            
+            if i != 0:
+                out += ', '
+
+            out += '#'
+            out += str(obj[2][au_gcc[i]])
+            out += str(au_gcc[i][1:])
+    
+    out += ')'
+    return out
+
 # END OF FUNCTIONS
 
 
@@ -179,8 +201,6 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
 gcc_stats_list = comm.gather(gcc_stats, root = 0)
 user_stats_list = comm.gather(user_stats, root = 0)
 
-# task1 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)
-
 # output for task 1
 if rank == 0:
     # QUESTION: this should still be a dictionary right?
@@ -190,9 +210,9 @@ if rank == 0:
 
     author_id = [obj[0] for obj in task1]
     number_of_tweets = [obj[1] for obj in task1]
-    rank = [f'#{i}' for i in range(len(1, 11))]
-    result_task1 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Tweets Made': number_of_tweets})
-    print(result_task1)
+    rank = [f'#{i}' for i in range(1, 11)]
+    result_task = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Tweets Made': number_of_tweets})
+    print(result_task)
     # get runtime, TODO: delete when using spartan. 
     print(time.time()-time_start)
 
@@ -210,7 +230,16 @@ if rank == 0:
 
 
 # task3 = sorted(list(user_stats.items()), key = lambda x:x[1][2], reverse=True)
+task3 = [(key, user_stats[key][0], user_stats[key][1], user_stats[key][2]) for key in user_stats]
+task3.sort(key = lambda x:x[3], reverse = True)
+task3 = task3[:10]
+
+author_id = [obj[0] for obj in task1]
+number_of_city_locations_and_tweets = [get_number_of_city_locations_and_tweets(obj) for obj in task3]
+result_task = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Unique City Locations and #Tweets': number_of_city_locations_and_tweets})
+print(result_task)
 
 
 
-# TODO: output for task 2 and 3
+
+# TODO: output for task 3

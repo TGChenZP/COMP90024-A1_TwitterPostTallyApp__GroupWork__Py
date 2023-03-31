@@ -90,9 +90,9 @@ def update_stats(tweet_location, author_id):
         user_stats[author_id][1][gcc] += 1 # add tweet count to gcc tally
     
     if gcc not in gcc_stats:
-        gcc_stats[gcc] = 1 # add gcc to tally
+        gcc_stats[f'{gcc} ({task2_map[gcc]})'] = 1 # add gcc to tally
     else:
-        gcc_stats[gcc] += 1 # add tweeter count to gcc tally
+        gcc_stats[f'{gcc} ({task2_map[gcc]})'] += 1 # add tweeter count to gcc tally
 
 # END OF FUNCTIONS
 
@@ -105,6 +105,9 @@ with open('./data/sal.json', 'r', encoding = 'utf-8') as f:
 
 # create a list contains all greater capital cities in Australia 
 au_gcc = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar', '8acte', '9othe']
+task2_map = {'1gsyd': 'Greater Sydney', '2gmel': 'Greater Melbourne', '3gbri': 'Greater Brisbane', '4gade': 'Greater Adelaide', 
+             '5gper': 'Greater Perth', '6ghob': 'Greater Hobart', '7gdar': 'Greater Darwin', '8acte': 'Greater Canberra', 
+             '9othe': 'Great Other Territories'}
 
 gcc_sa1 = {key:sa1[key] for key in sa1 if sa1[key]['gcc'] in au_gcc}
 
@@ -145,6 +148,7 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
     # the first line of json file is a opening square bracket "[", we skip this line 
     next(f)
     tweet_index = 0
+    # TODO: 这个读法还是很有问题，等于没有parallel。我会尝试去写一个新的readin方法
     while True:
         line = f.readline()
         # if not end of file
@@ -171,24 +175,25 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
         else:
             break
 
-
+#TODO: only if node = 0? 
 gcc_stats_list = comm.gather(gcc_stats, root = 0)
 user_stats_list = comm.gather(user_stats, root = 0)
 
-# output for task 1
-# TODO: add (Greater Sydney) to each gcc
+# task1 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)
+
+# output for task 2
+# TODO: Question: do we need to sort?
 if rank == 0:
     gcc_stats = Counter()
     for result in gcc_stats_list:
         gcc_stats += Counter(result)
-    task1 = list(gcc_stats.items())    
-    result_task1 = pd.DataFrame(task1, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
-    print(result_task1)
-    # get runtime, delete when using spartan. 
+    task2 = list(gcc_stats.items())    
+    result_task2 = pd.DataFrame(task2, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
+    print(result_task2)
+    # get runtime, TODO: delete when using spartan. 
     print(time.time()-time_start)
 
 
-# task2 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)
 # task3 = sorted(list(user_stats.items()), key = lambda x:x[1][2], reverse=True)
 
 

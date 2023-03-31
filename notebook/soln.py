@@ -246,7 +246,10 @@ if rank == 0:
         new_key = "{gcc_short} ({gcc_full})".format(gcc_short=gcc, gcc_full = full_name)
         gcc_stats[new_key] = temp_gcc_stats[gcc]
 
+    
     task2 = list(gcc_stats.items())    
+    # sort by numTweets
+    task2.sort(key = lambda x:x[1], reverse = True)
     result_task2 = pd.DataFrame(task2, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
     # print the output ignoring index
     print(result_task2.to_string(index=False))

@@ -181,6 +181,21 @@ user_stats_list = comm.gather(user_stats, root = 0)
 
 # task1 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)
 
+# output for task 1
+if rank == 0:
+    # QUESTION: this should still be a dictionary right?
+    task1 = [(key, user_stats_list[key][0]) for key in user_stats_list]
+    task1.sort(key=lambda x:x[1], reverse = True)
+    task1 = task1[:10]
+
+    author_id = [obj[0] for obj in task1]
+    number_of_tweets = [obj[1] for obj in task1]
+    rank = [f'#{i}' for i in range(len(1, 11))]
+    result_task1 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Tweets Made': number_of_tweets})
+    print(result_task1)
+    # get runtime, TODO: delete when using spartan. 
+    print(time.time()-time_start)
+
 # output for task 2
 # TODO: Question: do we need to sort?
 if rank == 0:

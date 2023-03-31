@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import re
+import time
 
 from collections import defaultdict as dd
 from mpi4py import MPI
@@ -50,10 +51,8 @@ def get_duplicate_and_non_duplicate_sal_dicts(gcc_sa1):
 
 
 # TODO: change twitter_data
-def update_stats(tweet):
+def update_stats(tweet_location, author_id):
     
-    # get location for each tweet
-    tweet_location = tweet['includes']['places'][0]['full_name'].lower() 
     # try to just use the sa1 (e.g. try to use 'central coast' if location is 'central coast, new south wales')
     tweet_sal = tweet_location.split(',')[0] 
     
@@ -73,24 +72,22 @@ def update_stats(tweet):
         # if not, then just ignore
         except:
             # print ignored instances
-            print('flushed out:', tweet_location) 
+            # print('flushed out:', tweet_location) 
             return 
         
-    # the author id from tweets
-    id = tweet['_id']
 
     # update user_stats and gcc_stats
-    if id not in user_stats:
-        user_stats[id] = [1, {gcc:1}, 1] # tweet count, tweet count from each gcc, diff gccs
+    if author_id not in user_stats:
+        user_stats[author_id] = [1, {gcc:1}, 1] # tweet count, tweet count from each gcc, diff gccs
     else:
-        user_stats[id][0] += 1 # add 1 to tweet count
+        user_stats[author_id][0] += 1 # add 1 to tweet count
 
-    if gcc not in user_stats[id][1]:
-        user_stats[id][1][gcc] = 1 # add gcc to tally
+    if gcc not in user_stats[author_id][1]:
+        user_stats[author_id][1][gcc] = 1 # add gcc to tally
 
-        user_stats[id][2] += 1 # add to diff gcc tally
+        user_stats[author_id][2] += 1 # add to diff gcc tally
     else:
-        user_stats[id][1][gcc] += 1 # add tweet count to gcc tally
+        user_stats[author_id][1][gcc] += 1 # add tweet count to gcc tally
     
     if gcc not in gcc_stats:
         gcc_stats[gcc] = 1 # add gcc to tally
@@ -110,7 +107,7 @@ with open('./data/sal.json', 'r', encoding = 'utf-8') as f:
 au_gcc = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar', '8acte', '9othe']
 
 gcc_sa1 = {key:sa1[key] for key in sa1 if sa1[key]['gcc'] in au_gcc}
-print(gcc_sa1)
+
 
 dup_sal_dict, non_dup_sal_dict, dup_sal_map_dict = get_duplicate_and_non_duplicate_sal_dicts(gcc_sa1)
 
@@ -138,34 +135,38 @@ gcc_stats = dict()
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
-
+# get runtime, delete when using spartan. 
+time_start = time.time()
 
 # read the twitter data by readline() to avoid running out of memory
 with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
-    tweet = ''
+    tweet_location = ""
+    author_id = ""
     # the first line of json file is a opening square bracket "[", we skip this line 
     next(f)
     tweet_index = 0
     while True:
         line = f.readline()
+        # if not end of file
         if line:
-            # if haven't reached the end of a tweet: 
-            # "  },\n" is the ending for all tweets, excluding the last tweet and the last one has a ending of "  }\n"
-            if line not in ["  },\n", "  }\n"]:
-                tweet += line
+            # extract author id
+            if "author_id" in line:
+                author_id = int(re.findall('[0-9]+', line)[0])
+            # extract full name location, lower all characters
+            elif "full_name" in line:
+                tweet_location = re.findall('"([^"]*)"',line)[1].lower()
             # if reached the end of a tweet:
-            else:
+            # "  },\n" is the ending for all tweets, excluding the last tweet and the last one has a ending of "  }\n"
+            elif line in ["  },\n", "  }\n"]:
                 # update the index of the tweet
                 tweet_index += 1
                 # this process will only process tweet with tweet_index%size == rank
                 if tweet_index % size == rank:
-                    tweet += line.split(',')[0]
-                    # load json as a dictionary
-                    tweet_json = json.loads(tweet)
                     # analyse this tweet and update stats 
-                    update_stats(tweet_json)
-                # reset tweet
-                tweet = ""
+                    update_stats(tweet_location, author_id)
+                # reset tweet location and author id
+                tweet_location = ""
+                author_id = ""
         # line is false: end of file
         else:
             break
@@ -183,6 +184,8 @@ if rank == 0:
     task1 = list(gcc_stats.items())    
     result_task1 = pd.DataFrame(task1, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
     print(result_task1)
+    # get runtime, delete when using spartan. 
+    print(time.time()-time_start)
 
 
 # task2 = sorted(list(user_stats.items()), key = lambda x:x[1][0], reverse=True)

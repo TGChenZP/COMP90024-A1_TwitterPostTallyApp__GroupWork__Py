@@ -230,14 +230,15 @@ if rank == 0:
 
 
 # task3 = sorted(list(user_stats.items()), key = lambda x:x[1][2], reverse=True)
-task3 = [(key, user_stats[key][0], user_stats[key][1], user_stats[key][2]) for key in user_stats]
-task3.sort(key = lambda x:x[3], reverse = True)
-task3 = task3[:10]
+if rank == 0:
+    task3 = [(key, user_stats[key][0], user_stats[key][1], user_stats[key][2]) for key in user_stats]
+    task3.sort(key = lambda x:x[3], reverse = True)
+    task3 = task3[:10]
 
-author_id = [obj[0] for obj in task1]
-number_of_city_locations_and_tweets = [get_number_of_city_locations_and_tweets(obj) for obj in task3]
-result_task = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Unique City Locations and #Tweets': number_of_city_locations_and_tweets})
-print(result_task)
+    author_id = [obj[0] for obj in task1]
+    number_of_city_locations_and_tweets = [get_number_of_city_locations_and_tweets(obj) for obj in task3]
+    result_task = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Unique City Locations and #Tweets': number_of_city_locations_and_tweets})
+    print(result_task)
 
 
 

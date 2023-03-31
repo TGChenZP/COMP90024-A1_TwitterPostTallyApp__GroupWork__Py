@@ -200,6 +200,7 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
 #TODO: only if node = 0? 
 gcc_stats_list = comm.gather(gcc_stats, root = 0)
 user_stats_list = comm.gather(user_stats, root = 0)
+# TODO: isn't user_stats_list supposed to be a dictionary?
 
 # output for task 1
 if rank == 0:
@@ -239,8 +240,3 @@ if rank == 0:
     number_of_city_locations_and_tweets = [get_number_of_city_locations_and_tweets(obj) for obj in task3]
     result_task = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Unique City Locations and #Tweets': number_of_city_locations_and_tweets})
     print(result_task)
-
-
-
-
-# TODO: output for task 3

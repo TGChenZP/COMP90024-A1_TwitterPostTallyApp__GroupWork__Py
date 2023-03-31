@@ -160,8 +160,8 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
             elif line in ["  },\n", "  }\n"]:
                 # update the index of the tweet
                 tweet_index += 1
-                # this process will only process tweet with tweet_index%size == rank
-                if tweet_index % size == rank:
+                # this process will only process tweet with tweet_index%size == rank, and author_id and tweet_location both exist
+                if tweet_index % size == rank & author_id & tweet_location:
                     # analyse this tweet and update stats 
                     update_stats(tweet_location, author_id)
                 # reset tweet location and author id

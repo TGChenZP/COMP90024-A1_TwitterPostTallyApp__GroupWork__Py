@@ -165,29 +165,36 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
     # the first line of json file is a opening square bracket "[", we skip this line 
     next(f)
     tweet_index = 0
-    # TODO: 这个读法还是很有问题，等于没有parallel。我会尝试去写一个新的readin方法
+    
+    tweet_index = 0
     while True:
         line = f.readline()
         # if not end of file
         if line:
+            
+            if line in ["  },\n", "  }\n"]:
+                # update the index of the tweet
+                tweet_index += 1
+                # this process will only process tweet with tweet_index%size == rank
+                if tweet_index % size == rank: # TODO: 为什么不check他的tweet location和author id了？？
+                    # analyse this tweet and update stats 
+                    update_stats(tweet_location, author_id)
+                # reset tweet location and author id
+                tweet_location = ""
+                author_id = ""
+
+            elif tweet_index % size != rank: 
+                continue
+
             # extract author id
-            if "author_id" in line:
+            elif "author_id" in line:
                 author_id = int(re.findall('[0-9]+', line)[0])
             # extract full name location, lower all characters
             elif "full_name" in line:
                 tweet_location = re.findall('"([^"]*)"',line)[1].lower()
             # if reached the end of a tweet:
             # "  },\n" is the ending for all tweets, excluding the last tweet and the last one has a ending of "  }\n"
-            elif line in ["  },\n", "  }\n"]:
-                # update the index of the tweet
-                tweet_index += 1
-                # this process will only process tweet with tweet_index%size == rank
-                if tweet_index % size == rank:
-                    # analyse this tweet and update stats 
-                    update_stats(tweet_location, author_id)
-                # reset tweet location and author id
-                tweet_location = ""
-                author_id = ""
+            
         # line is false: end of file
         else:
             break

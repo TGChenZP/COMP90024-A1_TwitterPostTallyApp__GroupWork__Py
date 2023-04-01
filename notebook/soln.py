@@ -100,11 +100,15 @@ def get_number_of_city_locations_and_tweets(obj):
     out += str(obj[1])
     out += ' tweets - '
 
+    first_gcc_printed = False # for formatting the ','
     for i in range(len(au_gcc)):
+
         if au_gcc[i] in obj[2]:
             
-            if i != 0:
+            if first_gcc_printed:
                 out += ', '
+            
+            first_gcc_printed = True
 
             out += '#'
             out += str(obj[2][au_gcc[i]])
@@ -201,7 +205,7 @@ with open('./data/twitter-data-small.json', 'r', encoding = 'utf-8') as f:
 
 gcc_stats_list = comm.gather(gcc_stats, root = 0)
 user_stats_list = comm.gather(user_stats, root = 0)
-
+print(gcc_stats_list)
 
 # only master combines information gatherred from slaves and output the result.
 if rank == 0:

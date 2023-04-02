@@ -15,9 +15,6 @@
 #SBATCH --ntasks-per-node=4
 #SBATCH --nodes=2-2
 
-# The amount of memory in megabytes per cpu core:
-#SBATCH --mem-per-cpu=8192
-
 # Use this email address:
 #SBATCH --mail-user=lachen1@student.unimelb.edu.au
 

@@ -63,7 +63,7 @@ def update_stats(tweet_location, author_id):
         # extract the state from "tweet_location" as well
         tweet_state = tweet_location.split(',')[1].strip()
         # use duplicated sal dictionary to find the actuall gcc as stored in sal json
-        gcc = dup_sal_dict[dup_sal_map_dict[MAP_TweetState_TO_DupSALDict[tweet_state]]]['gcc'] 
+        gcc = dup_sal_dict[dup_sal_map_dict[MAP_TweetState_TO_DupSALDict[tweet_state.lower()]]]['gcc'] 
 
     # if tweet_sal is not a duplicated suburb name:
     else:
@@ -140,14 +140,14 @@ dup_sal_dict, non_dup_sal_dict, dup_sal_map_dict = get_duplicate_and_non_duplica
 
 # Hardcode dictionary mapping twitter data's state back to Duplicated_sal_dict
 MAP_TweetState_TO_DupSALDict = {
-    'Tasmania': 'tas',
-    'Western Australia': 'wa',
-    'New South Wales': 'nsw',
-    'Victoria': 'vic',
-    'South Australia': 'sa',
-    'Queensland': 'qld',
-    'Northern Territory': 'nt',
-    'Australian Capital Territory': 'act'
+    'tasmania': 'tas',
+    'western australia': 'wa',
+    'new south wales': 'nsw',
+    'victoria': 'vic',
+    'south australia': 'sa',
+    'queensland': 'qld',
+    'northern territory': 'nt',
+    'australian capital territory': 'act'
 }
 
 # A dictionary stores the tweet count, tweet count from each gcc for each author id. It will have the following format:

@@ -44,7 +44,7 @@ fi
 module load mpi4py/3.0.2-timed-pingpong
 
 # The job command(s):
-python soln.py
+mpixec -n 8 python soln.py bigTwitter.json sal.json
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage

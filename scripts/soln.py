@@ -56,14 +56,14 @@ def update_stats(tweet_location, author_id):
     """ Helper function to update stats given a tweet we just read """
 
     # try to just use the sa1 (e.g. try to use 'central coast' if location is 'central coast, new south wales')
-    tweet_sal = tweet_location.split(',')[0] 
+    tweet_sal = tweet_location.split(',')[0].split('(')[0].strip()
     
     # if tweet_sal is a duplicated suburb name which are repeated in differnt states:
     if tweet_sal in dup_sal_dict: 
         # extract the state from "tweet_location" as well
         tweet_state = tweet_location.split(',')[1].strip()
         # use duplicated sal dictionary to find the actuall gcc as stored in sal json
-        gcc = dup_sal_dict[dup_sal_map_dict[MAP_TweetState_TO_DupSALDict[tweet_state.lower()]]]['gcc'] 
+        gcc = dup_sal_dict[dup_sal_map_dict[tweet_sal][MAP_TweetState_TO_DupSALDict[tweet_state.lower()]]]['gcc'] 
 
     # if tweet_sal is not a duplicated suburb name:
     else:

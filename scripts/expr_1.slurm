@@ -41,7 +41,12 @@ fi
 # Run the job from the directory where it was launched (default)
 
 # The modules to load:
+module load gcccore/10.2.0 python/3.7.4
 module load mpi4py/3.0.2-timed-pingpong
+virtualenv ~/venvs/venv-3.7.4
+source ~/venvs/venv-3.7.4/bin/activate
+pip install pandas
+
 
 # The job command(s):
 python soln.py bigTwitter.json sal.json

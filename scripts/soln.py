@@ -3,6 +3,7 @@ import json
 import re
 import time
 import sys
+import os
 
 from collections import defaultdict as dd
 from mpi4py import MPI
@@ -24,16 +25,17 @@ def get_duplicate_and_non_duplicate_sal_dicts(gcc_sal):
             dic = {}
             suburb = ""
             state = ""
-            for word in sal.split():
-                # the word included in brackets implys that it is a state name
-                if word.startswith("("):
+            # separate state and suburb by "("
+            for index, word in enumerate(sal.split("(")):
+                # the second returned word is the state
+                if index != 0:
                     # use slicing to extract the state from the bracket
-                    state = word[word.find('(')+1:word.find(')')]
+                    state = sal[sal.find('(')+1:sal.find(')')]
                     # remove punctuations (especially period) if there is any
                     state = re.sub(r'[^\w\s]', '', state)
                 # not included in () means that it is a suburb name or part of the suburb name
                 else:
-                    suburb += word
+                    suburb += word[:-1]
             dic[state] = sal
 
             # if this suburb already exist in dictionary, we update more state
@@ -164,8 +166,9 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
 
-# # get runtime, delete when using spartan. 
+# TODO:get runtime, delete when using spartan. 
 # time_start = time.time()
+
 
 # read the twitter data by readline() to avoid running out of memory
 with open(file_address, 'r', encoding = 'utf-8') as f:
@@ -179,7 +182,8 @@ with open(file_address, 'r', encoding = 'utf-8') as f:
         line = f.readline()
         # if not end of file
         if line:
-            
+            # if reached the end of a tweet:
+            # "  },\n" is the ending for all tweets, excluding the last tweet and the last one has a ending of "  }\n"
             if line in ["  },\n", "  }\n"]:
                 # update the index of the tweet
                 tweet_index += 1
@@ -201,12 +205,12 @@ with open(file_address, 'r', encoding = 'utf-8') as f:
             # extract full name location, lower all characters
             elif "full_name" in line:
                 tweet_location = re.findall('"([^"]*)"',line)[1].lower()
-            # if reached the end of a tweet:
-            # "  },\n" is the ending for all tweets, excluding the last tweet and the last one has a ending of "  }\n"
+            
             
         # line is false: end of file; so break loop
         else:
             break
+
 
 # if node number is root = 0, then it (also) collects the gcc_stat and user_stat dicts (in the form of list of dicts (which happen to be type of sent variables);
 # else: it sends this dictionary object back to the main

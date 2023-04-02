@@ -46,7 +46,7 @@ pip install pandas
 
 
 # The job command(s):
-mpixec -n 8 python soln.py bigTwitter.json sal.json
+mpiexec -n 8 python soln.py bigTwitter.json sal.json
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage

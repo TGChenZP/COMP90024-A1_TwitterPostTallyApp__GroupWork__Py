@@ -167,7 +167,7 @@ rank = comm.Get_rank()
 size = comm.Get_size()
 
 # TODO:get runtime, delete when using spartan. 
-# time_start = time.time()
+time_start = time.time()
 
 
 # read the twitter data by readline() to avoid running out of memory
@@ -196,7 +196,7 @@ with open(file_address, 'r', encoding = 'utf-8') as f:
                 author_id = ""
 
             # if the tweet_index shows it is not this node's job to process this tweet, then we just skip over it.
-            elif tweet_index % size != rank: 
+            elif (tweet_index + 1) % size != rank: 
                 continue
 
             # extract author id
@@ -250,7 +250,10 @@ if rank == 0:
     author_id = [obj[0] for obj in task1]
     number_of_tweets = [obj[1] for obj in task1]
     rank = [f'#{i}' for i in range(1, 11)]
-    result_task1 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Tweets Made': number_of_tweets})
+    task1_list_for_df = [(rank[i], author_id[i], number_of_tweets[i]) for i in range(len(rank))]
+    result_task1 = pd.DataFrame(task1_list_for_df, columns = ['Rank', 'Author Id', 'Numbers of Tweets Made'])
+
+    ## result_task1 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Tweets Made': number_of_tweets})
     print(result_task1.to_string(index=False))
 
 
@@ -286,8 +289,10 @@ if rank == 0:
 
     author_id = [obj[0] for obj in task1]
     number_of_city_locations_and_tweets = [get_number_of_city_locations_and_tweets(obj) for obj in task3]
-    result_task3 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Unique City Locations and #Tweets': number_of_city_locations_and_tweets})
+    task3_list_for_df = [(rank[i], author_id[i], number_of_city_locations_and_tweets[i]) for i in range(len(rank))]
+    result_task3 = pd.DataFrame(task3_list_for_df, columns = ['Rank', 'Author Id', 'Number of Unique City Locations and #Tweets'])
+    # result_task3 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Unique City Locations and #Tweets': number_of_city_locations_and_tweets})
     print(result_task3.to_string(index=False))
 
     # # get runtime, TODO: delete when using spartan. 
-    # print(time.time()-time_start)
+    print(time.time()-time_start)

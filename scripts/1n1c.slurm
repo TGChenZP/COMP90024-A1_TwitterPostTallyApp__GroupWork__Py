@@ -1,19 +1,19 @@
 #!/bin/bash
 # Created by the University of Melbourne job script generator for SLURM
-# Sun Apr 02 2023 17:14:31 GMT+1000 (Australian Eastern Standard Time)
+# Sun Apr 02 2023 17:13:58 GMT+1000 (Australian Eastern Standard Time)
 
 # Partition for the job:
 #SBATCH --partition=physical
 
 # The name of the job:
-#SBATCH --job-name="ronsuzy_2node_8core"
+#SBATCH --job-name="1n1c"
 
 # The project ID which this job should run under:
 #SBATCH --account="COMP90024"
 
 # Maximum number of tasks/CPU cores used by the job:
-#SBATCH --ntasks-per-node=4
-#SBATCH --nodes=2-2
+#SBATCH --ntasks=1
+#SBATCH --nodes=1-1
 
 # Use this email address:
 #SBATCH --mail-user=lachen1@student.unimelb.edu.au
@@ -44,8 +44,9 @@ virtualenv ~/venvs/venv-3.7.4
 source ~/venvs/venv-3.7.4/bin/activate
 pip install pandas
 
+
 # The job command(s):
-mpiexec -n 8 python soln.py bigTwitter.json sal.json
+python soln.py bigTwitter.json sal.json
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage

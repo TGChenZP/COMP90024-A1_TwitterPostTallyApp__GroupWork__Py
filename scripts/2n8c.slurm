@@ -6,14 +6,14 @@
 #SBATCH --partition=physical
 
 # The name of the job:
-#SBATCH --job-name="ronsuzy_1node_8core"
+#SBATCH --job-name="2n8c"
 
 # The project ID which this job should run under:
 #SBATCH --account="COMP90024"
 
 # Maximum number of tasks/CPU cores used by the job:
-#SBATCH --ntasks=8
-#SBATCH --nodes=1-1
+#SBATCH --ntasks-per-node=4
+#SBATCH --nodes=2-2
 
 # Use this email address:
 #SBATCH --mail-user=lachen1@student.unimelb.edu.au
@@ -43,7 +43,6 @@ module load mpi4py/3.0.2-timed-pingpong
 virtualenv ~/venvs/venv-3.7.4
 source ~/venvs/venv-3.7.4/bin/activate
 pip install pandas
-
 
 # The job command(s):
 mpiexec -n 8 python soln.py bigTwitter.json sal.json

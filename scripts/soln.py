@@ -56,7 +56,7 @@ def get_duplicate_and_non_duplicate_sal_dicts(gcc_sal):
 
 def update_stats(tweet_location, author_id):
     """ Helper function to update stats given a tweet we just read """
-
+    
     # try to just use the sa1 (e.g. try to use 'central coast' if location is 'central coast, new south wales')
     tweet_sal = tweet_location.split(',')[0].split('(')[0].strip()
     
@@ -75,24 +75,29 @@ def update_stats(tweet_location, author_id):
         # if not, then just ignore
         except:
             return 
-        
-
-    # update user_stats
+    
+    # update user_stats (do not need to consider gcc)
     if author_id not in user_stats:
-        user_stats[author_id] = {gcc:1}
+        user_stats[author_id] = 1
     else:
-        if gcc not in user_stats[author_id]:
-            user_stats[author_id][gcc] = 1 # add gcc to tally and record 1 tweet
-        else:
-            user_stats[author_id][gcc] += 1 # add tweet count to gcc tally
-    # due to parallelisation, don't need to count up distinct number of locations that tweets were made in just yet.
-    # this should be done on node 0
+        user_stats[author_id] += 1
 
     # update gcc_stats
     if gcc not in gcc_stats:
         gcc_stats[gcc] = 1 # add gcc to tally
     else:
         gcc_stats[gcc] += 1 # add tweet count to gcc tally
+
+    # update user_gcc_stats
+    if author_id not in user_gcc_stats:
+        user_gcc_stats[author_id] = {gcc:1}
+    else:
+        if gcc not in user_gcc_stats[author_id]:
+            user_gcc_stats[author_id][gcc] = 1 # add gcc to tally and record 1 tweet
+        else:
+            user_gcc_stats[author_id][gcc] += 1 # add tweet count to gcc tally
+    # due to parallelisation, don't need to count up distinct number of locations that tweets were made in just yet.
+    # this should be done on node 0
 
 
 
@@ -152,13 +157,16 @@ MAP_TweetState_TO_DupSALDict = {
     'australian capital territory': 'act'
 }
 
-# A dictionary stores the tweet count, tweet count from each gcc for each author id. It will have the following format:
-# user_stats = {'author_id_1': {'gcc1': count_in_gcc1, 'gcc2': count_gcc2,...},
-#               'author_id_2': {...}}
+# A dictionary that stores the number of tweets made by each author id
 user_stats = dict()
 
-# A dictionary stores the number of tweets made in each Greater Capital cities of Australia.
+# A dictionary that stores the number of tweets made in each Greater Capital cities of Australia.
 gcc_stats = dict()
+
+# A dictionary that stores the tweet count, tweet count from each gcc for each author id. It will have the following format:
+# user_gcc_stats = {'author_id_1': {'gcc1': count_in_gcc1, 'gcc2': count_gcc2,...},
+#               'author_id_2': {...}}
+user_gcc_stats = dict()
 
 # As each individual node will read this script from start to end, they need to know which node they are within this cluster
 # get rank and size from MPI for this process
@@ -214,36 +222,23 @@ with open(file_address, 'r', encoding = 'utf-8') as f:
 
 # if node number is root = 0, then it (also) collects the gcc_stat and user_stat dicts (in the form of list of dicts (which happen to be type of sent variables);
 # else: it sends this dictionary object back to the main
-gcc_stats_list = comm.gather(gcc_stats, root = 0)
 user_stats_list = comm.gather(user_stats, root = 0)
+gcc_stats_list = comm.gather(gcc_stats, root = 0)
+user_gcc_stats_list = comm.gather(user_gcc_stats, root = 0)
 
 # only master combines information gatherred from slaves and output the result.
 if rank == 0:
-    # use a temporary dictionary to combine user_stats from gathered user_stats_list from each processor
-    # it has the form of : temp_user_stats = {'author_id_1': {'gcc1': count_in_gcc1, 'gcc2': count_gcc2,...},...}
-    temp_user_stats = {}
-    for d in user_stats_list: # for each processor's outcome
-        for author_id, stat in d.items():
-            if author_id not in temp_user_stats:
-                temp_user_stats[author_id] = stat
-            else:
-                temp_user_stats[author_id] = Counter(temp_user_stats[author_id]) + Counter(stat)
-
-    # A dictionary stores the tweet count, tweet count from each gcc and diff gccs count for each author id. It will have the following format:
-    # user_stats = {'author_id_1': [tweet_count, {'gcc1': count_in_gcc1, 'gcc2': count_gcc2,...}, diff_gccs_count],
-    #               'author_id_2': [...],...}
+    # use 
     user_stats = {}
-    # process temp_user_stats to also derive number of tweet tweeted and number of different gccs tweeted from for each author
-    for author_id, stat in temp_user_stats.items():
-        # total number of tweet = sum of number of tweet made in each gcc
-        numTweet = sum(stat.values())
-        # number of distinct gcc = the number of keys in stat
-        numGcc = len(stat.keys())
-        user_stats[author_id] = [numTweet, stat, numGcc]
-
+    for d in user_stats_list:
+        for author_id, stat in d.items():
+            if author_id not in user_stats:
+                user_stats[author_id] = stat
+            else:
+                user_stats[author_id] += stat
 
     # get output for task 1
-    task1 = [(author, stat[0]) for author, stat in user_stats.items()]
+    task1 = [(author, stat) for author, stat in user_stats.items()]
     task1.sort(key=lambda x:x[1], reverse = True)
     task1 = task1[:10]
     # get author and numTweet as two separated lists
@@ -281,8 +276,30 @@ if rank == 0:
     print(result_task2.to_string(index=False))
 
 
+    # use a temporary dictionary to combine user_gcc_stats from gathered user_gcc_stats_list from each processor
+    # it has the form of : temp_user_gcc_stats = {'author_id_1': {'gcc1': count_in_gcc1, 'gcc2': count_gcc2,...},...}
+    temp_user_gcc_stats = {}
+    for d in user_gcc_stats_list: # for each processor's outcome
+        for author_id, stat in d.items():
+            if author_id not in temp_user_gcc_stats:
+                temp_user_gcc_stats[author_id] = stat
+            else:
+                temp_user_gcc_stats[author_id] = Counter(temp_user_gcc_stats[author_id]) + Counter(stat)
+
+    # A dictionary stores the tweet count, tweet count from each gcc and diff gccs count for each author id. It will have the following format:
+    # user_gcc_stats = {'author_id_1': [tweet_count, {'gcc1': count_in_gcc1, 'gcc2': count_gcc2,...}, diff_gccs_count],
+    #               'author_id_2': [...],...}
+    user_gcc_stats = {}
+    # process temp_user_gcc_stats to also derive number of tweet tweeted and number of different gccs tweeted from for each author
+    for author_id, stat in temp_user_gcc_stats.items():
+        # total number of tweet = sum of number of tweet made in each gcc
+        numTweet = sum(stat.values())
+        # number of distinct gcc = the number of keys in stat
+        numGcc = len(stat.keys())
+        user_gcc_stats[author_id] = [numTweet, stat, numGcc]
+
     # get output for task 3
-    task3 = [(author, user_stats[author][0], user_stats[author][1], user_stats[author][2]) for author in user_stats]
+    task3 = [(author, user_gcc_stats[author][0], user_gcc_stats[author][1], user_gcc_stats[author][2]) for author in user_gcc_stats]
     # sorted by numberOfUniqueCity, in case of a tie (numUniqueCity same), these should be ranked by numTweet.
     task3.sort(key = lambda x:(x[3],x[1]), reverse = True)
     task3 = task3[:10]

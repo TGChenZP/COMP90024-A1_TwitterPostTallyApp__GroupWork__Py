@@ -229,13 +229,9 @@ user_gcc_stats_list = comm.gather(user_gcc_stats, root = 0)
 # only master combines information gatherred from slaves and output the result.
 if rank == 0:
     # use 
-    user_stats = {}
+    user_stats = Counter()
     for d in user_stats_list:
-        for author_id, stat in d.items():
-            if author_id not in user_stats:
-                user_stats[author_id] = stat
-            else:
-                user_stats[author_id] += stat
+        user_stats = Counter(d) + user_stats
 
     # get output for task 1
     task1 = [(author, stat) for author, stat in user_stats.items()]
@@ -268,9 +264,8 @@ if rank == 0:
         gcc_stats[new_key] = temp_gcc_stats[gcc]
 
     
-    task2 = list(gcc_stats.items())    
-    # sort by numTweets
-    task2.sort(key = lambda x:x[1], reverse = True)
+    task2 = list(gcc_stats.items())   
+    task2.sort(key= lambda x:x[1], reverse = True) 
     result_task2 = pd.DataFrame(task2, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
     # print the output ignoring index
     print(result_task2.to_string(index=False))

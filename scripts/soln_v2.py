@@ -173,6 +173,9 @@ def get_start_end(filename, rough_start, rough_end, rank, size, file_byte_size):
 
 # END OF FUNCTIONS
 
+# TODO:get runtime, delete when using spartan. 
+time_start = time.time()
+
 file_address = sys.argv[1]
 sal_file_address = sys.argv[2]
 
@@ -232,10 +235,6 @@ rough_end = (rank+1)*rough_block_size
 accurate_start, accurate_end = get_start_end(file_address, rough_start, rough_end, rank, size, file_byte_size)
 
 
-# TODO:get runtime, delete when using spartan. 
-time_start = time.time()
-
-
 # read the twitter data by readline() to avoid running out of memory
 with open(file_address, 'r', encoding = 'utf-8') as f:
     tweet_location = ""
@@ -246,14 +245,19 @@ with open(file_address, 'r', encoding = 'utf-8') as f:
 
     while True:
         line = f.readline()
-        # if the byte index has suppased the accurate end then terminate, otherwise read file.
-        if f.tell() < accurate_end:
+        
+        # if not end of file
+        if line:
             # if reached the end of a tweet:
             # "  },\n" is the ending for all tweets, excluding the last tweet and the last one has a ending of "  }\n"
             if line in ["  },\n", "  }\n"]:
 
                 # analyse this tweet and update stats 
                 update_stats(tweet_location, author_id)
+                
+                # if the byte index has suppassed the accurate end then terminate, otherwise continue to read file.
+                if f.tell() >= accurate_end: 
+                    break
 
                 # reset tweet location and author id
                 tweet_location = ""
@@ -265,11 +269,11 @@ with open(file_address, 'r', encoding = 'utf-8') as f:
             # extract full name location, lower all characters
             elif "full_name" in line:
                 tweet_location = re.findall('"([^"]*)"',line)[1].lower()
-            
-            
-        # line is false: end of file; so break loop
+        
+        # end of file - break
         else:
             break
+            
 
 
 # if node number is root = 0, then it (also) collects the gcc_stat and user_stat dicts (in the form of list of dicts (which happen to be type of sent variables);

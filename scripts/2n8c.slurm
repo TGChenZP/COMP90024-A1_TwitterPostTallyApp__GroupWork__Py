@@ -45,7 +45,7 @@ source ~/venvs/venv-3.7.4/bin/activate
 pip install pandas
 
 # The job command(s):
-mpiexec -n 8 python soln.py bigTwitter.json sal.json
+mpiexec -n 8 python soln_v2.py bigTwitter.json sal.json
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage

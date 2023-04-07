@@ -46,7 +46,7 @@ pip install pandas
 
 
 # The job command(s):
-python soln.py smallTwitter.json sal.json
+python soln_v2.py smallTwitter.json sal.json
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage

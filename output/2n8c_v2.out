@@ -17,7 +17,8 @@ Rank           Author Id  Numbers of Tweets Made
   #7 1270672820792508417                   19801
   #8           233782487                   18179
   #9            84958532                   15676
- #10  719139700318081024                   15314
+ #10  719139700318081024                   15314 
+
      Greater Capital City  Numbers of Tweets Made
 2gmel (Greater Melbourne)                 2267051
    1gsyd (Greater Sydney)                 2114698
@@ -26,7 +27,8 @@ Rank           Author Id  Numbers of Tweets Made
  4gade (Greater Adelaide)                  449292
  8acte (Greater Canberra)                  194360
    6ghob (Greater Hobart)                   89970
-   7gdar (Greater Darwin)                   46376
+   7gdar (Greater Darwin)                   46376 
+
 Rank           Author Id                                                    Number of Unique City Locations and #Tweets
   #1 1089023364973219840         8 (#1908 tweets - #10gsyd, #1868gmel, #6gbri, #2gade, #7gper, #1ghob, #1gdar, #13acte)
   #2  826332877457481728       8 (#1189 tweets - #1041gsyd, #60gmel, #40gbri, #3gade, #7gper, #11ghob, #4gdar, #23acte)
@@ -37,37 +39,37 @@ Rank           Author Id                                                    Numb
   #7 1270672820792508417          8 (#198 tweets - #46gsyd, #56gmel, #37gbri, #20gade, #28gper, #4ghob, #1gdar, #6acte)
   #8           233782487         8 (#146 tweets - #44gsyd, #39gmel, #11gbri, #19gade, #14gper, #8ghob, #1gdar, #10acte)
   #9            84958532             8 (#80 tweets - #13gsyd, #16gmel, #32gbri, #3gade, #4gper, #5ghob, #3gdar, #4acte)
- #10  719139700318081024          7 (#2584 tweets - #403gsyd, #1547gmel, #91gbri, #47gade, #186gper, #84ghob, #226acte)
-142.67069554328918
-Job ID           : 46168903
+ #10  719139700318081024          7 (#2584 tweets - #403gsyd, #1547gmel, #91gbri, #47gade, #186gper, #84ghob, #226acte) 
+
+Job ID           : 46174300
 Cluster          : spartan
 User/Project     : lachen1/comp90024
 Nodes            : 2
-Wall-clock time  : 00:02:52 / 00:15:00
+Wall-clock time  : 00:01:52 / 00:15:00
 
-Displaying overall resources usage from 2023-04-07 15:25:40 to 2023-04-07 15:28:32:
+Displaying overall resources usage from 2023-04-07 19:45:15 to 2023-04-07 19:47:07:
 
 NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
 
-spartan-bm059 : 
-                CPU# 1    : 84.1   (  80.9 /   3.2 /   1.2 /  14.7 ) 
-                CPU# 2    : 76.7   (  74.1 /   2.6 /   0.5 /  22.7 ) 
-                CPU# 3    : 75.6   (  72.8 /   2.8 /   0.7 /  23.7 ) 
-                CPU# 4    : 78.8   (  75.8 /   3.1 /   1.1 /  20.1 ) 
+spartan-bm024 : 
+                CPU# 1    : 63.9   (  61.1 /   2.8 /   0.0 /  36.1 ) 
+                CPU# 2    : 77.1   (  74.4 /   2.7 /   0.0 /  22.9 ) 
+                CPU# 3    : 50.9   (  48.3 /   2.6 /   0.0 /  49.1 ) 
+                CPU# 4    : 67.9   (  64.0 /   3.9 /   0.0 /  32.1 ) 
 
-spartan-bm097 : 
-                CPU# 5    : 56.9   (  54.3 /   2.6 /   0.1 /  43.0 ) 
-                CPU# 6    : 27.6   (  26.0 /   1.6 /   0.1 /  72.4 ) 
-                CPU# 7    : 65.3   (  63.8 /   1.6 /   0.1 /  34.6 ) 
-                CPU# 8    : 65.9   (  63.5 /   2.4 /   0.0 /  34.0 ) 
+spartan-bm026 : 
+                CPU# 5    : 78.3   (  75.7 /   2.7 /   0.0 /  21.7 ) 
+                CPU# 6    : 78.3   (  75.8 /   2.6 /   0.0 /  21.7 ) 
+                CPU# 7    : 78.4   (  75.8 /   2.6 /   0.0 /  21.6 ) 
+                CPU# 8    : 78.2   (  75.9 /   2.3 /   0.0 /  21.7 ) 
 
 
 Allocated CPUs            : 8    
   CPUs with usage <25%    : 0    
-  CPUs with usage <50%    : 1    
-  CPUs with usage >50%    : 7    
+  CPUs with usage <50%    : 0    
+  CPUs with usage >50%    : 8    
 
-Memory used (RAM)         : 1.8%  [576MB of 32000MB]
+Memory used (RAM)         : 1.7%  [542MB of 32000MB]
 
 --------------------------------------------
 

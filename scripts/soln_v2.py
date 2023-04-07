@@ -128,7 +128,7 @@ def get_number_of_city_locations_and_tweets(obj, au_gcc):
 
 
 
-def get_start_end(filename, rough_start, rough_end, rank, size, file_byte_size):
+def get_start_end(filename, approximate_start, approximate_end, rank, size, file_byte_size):
     """ Function to get accurate start and end lines byte index for each core to only read necessary part of file """
 
     f = open(filename, "r")
@@ -139,11 +139,11 @@ def get_start_end(filename, rough_start, rough_end, rank, size, file_byte_size):
 
     else:
 
-        # jump to rough start
-        f.seek(rough_start)
+        # jump to approximate start
+        f.seek(approximate_start)
 
         # loop over lines and collect end of line's char pos using tell() if the line is an end of json object
-        # purpose: start readfile for each parallelised node at the next end of json object after rough start
+        # purpose: start readfile for each parallelised node at the next end of json object after approximate start
         while True: 
             line = f.readline()
             if line in ["  },\n", "  }\n"]:
@@ -156,11 +156,11 @@ def get_start_end(filename, rough_start, rough_end, rank, size, file_byte_size):
 
     else:
         
-        # jump to rough end
-        f.seek(rough_end)
+        # jump to approximate end
+        f.seek(approximate_end)
 
         # loop over lines and collect end of line's char pos using tell() if the line is an end of json object
-        # purpose: end readfile for each parallelised node at the next end of json object after rough end
+        # purpose: end readfile for each parallelised node at the next end of json object after approximate end
         while True:
             line = f.readline()
             if line in ["  },\n", "  }\n"]:
@@ -224,15 +224,15 @@ def main():
 
     # get file's total byte size - and how many bytes each core should process
     file_byte_size = os.path.getsize(file_address)
-    rough_block_size = file_byte_size // size
+    approximate_block_size = file_byte_size // size
 
-    # get rough start and rough end - because we might not exactly chop up our file on the real boundaries
+    # get approximate start and approximate end - because we might not exactly chop up our file on the real boundaries
     # of the json objects
-    rough_start = rank*rough_block_size
-    rough_end = (rank+1)*rough_block_size
+    approximate_start = rank*approximate_block_size
+    approximate_end = (rank+1)*approximate_block_size
 
     # use a function to find the correct byte index which is on the border of json objects
-    accurate_start, accurate_end = get_start_end(file_address, rough_start, rough_end, rank, size, file_byte_size)
+    accurate_start, accurate_end = get_start_end(file_address, approximate_start, approximate_end, rank, size, file_byte_size)
 
 
     # read the twitter data by readline() to avoid running out of memory
@@ -273,7 +273,7 @@ def main():
             # end of file - break
             else:
                 break
-                
+        
 
 
     # if node number is root = 0, then it (also) collects the gcc_stat and user_stat dicts (in the form of list of dicts (which happen to be type of sent variables);

@@ -176,9 +176,6 @@ def get_start_end(filename, rough_start, rough_end, rank, size, file_byte_size):
 
 def main():
 
-    # TODO:get runtime, delete when using spartan. 
-    time_start = time.time()
-
     file_address = sys.argv[1]
     sal_file_address = sys.argv[2]
 
@@ -304,7 +301,7 @@ def main():
         result_task1 = pd.DataFrame(task1_list_for_df, columns = ['Rank', 'Author Id', 'Numbers of Tweets Made'])
 
         ## result_task1 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Tweets Made': number_of_tweets})
-        print(result_task1.to_string(index=False))
+        print(result_task1.to_string(index=False), '\n')
 
 
         # get output for task 2
@@ -327,7 +324,7 @@ def main():
         task2.sort(key= lambda x:x[1], reverse = True) 
         result_task2 = pd.DataFrame(task2, columns = ['Greater Capital City', 'Numbers of Tweets Made'])
         # print the output ignoring index
-        print(result_task2.to_string(index=False))
+        print(result_task2.to_string(index=False), '\n')
 
 
         # use a temporary dictionary to combine user_gcc_stats from gathered user_gcc_stats_list from each processor
@@ -363,10 +360,7 @@ def main():
         task3_list_for_df = [(rank[i], author_id[i], number_of_city_locations_and_tweets[i]) for i in range(len(rank))]
         result_task3 = pd.DataFrame(task3_list_for_df, columns = ['Rank', 'Author Id', 'Number of Unique City Locations and #Tweets'])
         # result_task3 = pd.DataFrame({'Rank': rank, 'Author Id': author_id, 'Number of Unique City Locations and #Tweets': number_of_city_locations_and_tweets})
-        print(result_task3.to_string(index=False))
-
-        # # get runtime, TODO: delete when using spartan. 
-        print(time.time()-time_start)
+        print(result_task3.to_string(index=False), '\n')
 
 
 if __name__ == "__main__":

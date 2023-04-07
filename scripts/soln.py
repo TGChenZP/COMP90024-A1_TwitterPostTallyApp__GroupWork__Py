@@ -132,6 +132,9 @@ file_address = sys.argv[1]
 sal_file_address = sys.argv[2]
 
 
+# TODO:get runtime, delete when using spartan. 
+time_start = time.time()
+
 ## main
 # read the sal file
 with open(sal_file_address, 'r', encoding = 'utf-8') as f:
@@ -173,10 +176,6 @@ user_gcc_stats = dict()
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
-
-# TODO:get runtime, delete when using spartan. 
-time_start = time.time()
-
 
 # read the twitter data by readline() to avoid running out of memory
 with open(file_address, 'r', encoding = 'utf-8') as f:

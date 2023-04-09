@@ -186,7 +186,7 @@ def main():
         sal = json.load(f)
 
     # hardcode the list contains all greater capital cities in Australia 
-    au_gcc = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar', '8acte', '9othe']
+    au_gcc = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar', '8acte', '9oter']
 
     gcc_sal = {key:sal[key] for key in sal if sal[key]['gcc'] in au_gcc}
 
@@ -312,7 +312,7 @@ def main():
         # add the full name of gcc
         task2_map = {'1gsyd': 'Greater Sydney', '2gmel': 'Greater Melbourne', '3gbri': 'Greater Brisbane', '4gade': 'Greater Adelaide', 
                 '5gper': 'Greater Perth', '6ghob': 'Greater Hobart', '7gdar': 'Greater Darwin', '8acte': 'Greater Canberra', 
-                '9othe': 'Great Other Territories'}
+                '9oter': 'Great Other Territories'}
         gcc_stats = {}
         for gcc, value in temp_gcc_stats.items():
             full_name = task2_map[gcc]

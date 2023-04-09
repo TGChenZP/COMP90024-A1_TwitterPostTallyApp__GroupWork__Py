@@ -3,9 +3,9 @@ New python executable in /home/lachen1/venvs/venv-3.7.4/bin/python
 Installing setuptools, pip, wheel...
 done.
 Requirement already satisfied: pandas in ./venvs/venv-3.7.4/lib/python3.7/site-packages (1.3.5)
-Requirement already satisfied: numpy>=1.17.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (1.21.6)
 Requirement already satisfied: python-dateutil>=2.7.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (2.8.2)
 Requirement already satisfied: pytz>=2017.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (2023.3)
+Requirement already satisfied: numpy>=1.17.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (1.21.6)
 Requirement already satisfied: six>=1.5 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from python-dateutil>=2.7.3->pandas) (1.16.0)
 Rank           Author Id  Numbers of Tweets Made
   #1 1089023364973219840                   28127
@@ -19,15 +19,16 @@ Rank           Author Id  Numbers of Tweets Made
   #9            84958532                   15676
  #10  719139700318081024                   15314 
 
-     Greater Capital City  Numbers of Tweets Made
-2gmel (Greater Melbourne)                 2267051
-   1gsyd (Greater Sydney)                 2114698
- 3gbri (Greater Brisbane)                  855448
-    5gper (Greater Perth)                  589204
- 4gade (Greater Adelaide)                  449292
- 8acte (Greater Canberra)                  194360
-   6ghob (Greater Hobart)                   89970
-   7gdar (Greater Darwin)                   46376 
+           Greater Capital City  Numbers of Tweets Made
+      2gmel (Greater Melbourne)                 2267051
+         1gsyd (Greater Sydney)                 2114698
+       3gbri (Greater Brisbane)                  855448
+          5gper (Greater Perth)                  589204
+       4gade (Greater Adelaide)                  449292
+       8acte (Greater Canberra)                  194360
+         6ghob (Greater Hobart)                   89970
+         7gdar (Greater Darwin)                   46376
+9oter (Great Other Territories)                     160 
 
 Rank           Author Id                                                    Number of Unique City Locations and #Tweets
   #1 1089023364973219840         8 (#1908 tweets - #10gsyd, #1868gmel, #6gbri, #2gade, #7gper, #1ghob, #1gdar, #13acte)
@@ -41,25 +42,25 @@ Rank           Author Id                                                    Numb
   #9            84958532             8 (#80 tweets - #13gsyd, #16gmel, #32gbri, #3gade, #4gper, #5ghob, #3gdar, #4acte)
  #10  719139700318081024          7 (#2584 tweets - #403gsyd, #1547gmel, #91gbri, #47gade, #186gper, #84ghob, #226acte) 
 
-Job ID           : 46174298
+Job ID           : 46225786
 Cluster          : spartan
 User/Project     : lachen1/comp90024
 Nodes            : 1
-Wall-clock time  : 00:01:39 / 00:15:00
+Wall-clock time  : 00:01:24 / 00:15:00
 
-Displaying overall resources usage from 2023-04-07 19:52:19 to 2023-04-07 19:53:58:
+Displaying overall resources usage from 2023-04-09 20:41:19 to 2023-04-09 20:42:43:
 
 NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
 
-spartan-bm060 : 
-                CPU# 1    : 61.3   (  57.9 /   3.5 /   0.0 /  38.7 ) 
-                CPU# 2    : 66.3   (  62.1 /   4.2 /   0.0 /  33.7 ) 
-                CPU# 3    : 58.5   (  54.6 /   3.9 /   0.0 /  41.4 ) 
-                CPU# 4    : 61.1   (  57.1 /   4.0 /   0.5 /  38.4 ) 
-                CPU# 5    : 67.6   (  63.2 /   4.4 /   0.4 /  32.0 ) 
-                CPU# 6    : 68.5   (  64.7 /   3.8 /   0.0 /  31.5 ) 
-                CPU# 7    : 59.9   (  56.3 /   3.6 /   0.0 /  40.1 ) 
-                CPU# 8    : 65.9   (  62.3 /   3.5 /   0.0 /  34.1 ) 
+spartan-bm010 : 
+                CPU# 1    : 80.8   (  75.6 /   5.2 /   0.9 /  18.3 ) 
+                CPU# 2    : 56.6   (  53.2 /   3.4 /   0.2 /  43.1 ) 
+                CPU# 3    : 58.3   (  54.8 /   3.5 /   0.1 /  41.6 ) 
+                CPU# 4    : 63.5   (  59.5 /   3.9 /   0.1 /  36.4 ) 
+                CPU# 5    : 55.8   (  52.9 /   3.0 /   0.1 /  44.0 ) 
+                CPU# 6    : 56.0   (  53.0 /   3.0 /   0.1 /  43.9 ) 
+                CPU# 7    : 56.1   (  52.9 /   3.2 /   0.1 /  43.8 ) 
+                CPU# 8    : 56.0   (  52.7 /   3.2 /   0.1 /  43.9 ) 
 
 
 Allocated CPUs            : 8    
@@ -67,7 +68,7 @@ Allocated CPUs            : 8
   CPUs with usage <50%    : 0    
   CPUs with usage >50%    : 8    
 
-Memory used (RAM)         : 3.5%  [1104MB of 32000MB]
+Memory used (RAM)         : 3.5%  [1121MB of 32000MB]
 
 --------------------------------------------
 

@@ -355,7 +355,7 @@ def main():
         task3.sort(key = lambda x:(x[3],x[1]), reverse = True)
         task3 = task3[:10]
 
-        author_id = [obj[0] for obj in task1]
+        author_id = [obj[0] for obj in task3]
         number_of_city_locations_and_tweets = [get_number_of_city_locations_and_tweets(obj, au_gcc) for obj in task3]
         task3_list_for_df = [(rank[i], author_id[i], number_of_city_locations_and_tweets[i]) for i in range(len(rank))]
         result_task3 = pd.DataFrame(task3_list_for_df, columns = ['Rank', 'Author Id', 'Number of Unique City Locations and #Tweets'])

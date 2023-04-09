@@ -1,10 +1,20 @@
 Using base prefix '/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/8.3.0/python/3.7.4'
 New python executable in /home/lachen1/venvs/venv-3.7.4/bin/python
-Installing setuptools, pip, wheel...
-done.
+Traceback (most recent call last):
+  File "/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/8.3.0/python/3.7.4/bin/virtualenv", line 10, in <module>
+    sys.exit(main())
+  File "/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/8.3.0/python/3.7.4/lib/python3.7/site-packages/virtualenv.py", line 870, in main
+    symlink=options.symlink,
+  File "/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/8.3.0/python/3.7.4/lib/python3.7/site-packages/virtualenv.py", line 1156, in create_environment
+    install_python(home_dir, lib_dir, inc_dir, bin_dir, site_packages=site_packages, clear=clear, symlink=symlink)
+  File "/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/8.3.0/python/3.7.4/lib/python3.7/site-packages/virtualenv.py", line 1526, in install_python
+    shutil.copyfile(executable, py_executable)
+  File "/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/8.3.0/python/3.7.4/lib/python3.7/shutil.py", line 121, in copyfile
+    with open(dst, 'wb') as fdst:
+OSError: [Errno 26] Text file busy: '/home/lachen1/venvs/venv-3.7.4/bin/python'
 Requirement already satisfied: pandas in ./venvs/venv-3.7.4/lib/python3.7/site-packages (1.3.5)
-Requirement already satisfied: python-dateutil>=2.7.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (2.8.2)
 Requirement already satisfied: pytz>=2017.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (2023.3)
+Requirement already satisfied: python-dateutil>=2.7.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (2.8.2)
 Requirement already satisfied: numpy>=1.17.3 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from pandas) (1.21.6)
 Requirement already satisfied: six>=1.5 in ./venvs/venv-3.7.4/lib/python3.7/site-packages (from python-dateutil>=2.7.3->pandas) (1.16.0)
 Rank           Author Id  Numbers of Tweets Made
@@ -31,36 +41,36 @@ Rank           Author Id  Numbers of Tweets Made
 9oter (Great Other Territories)                     160 
 
 Rank           Author Id                                                    Number of Unique City Locations and #Tweets
-  #1 1089023364973219840         8 (#1908 tweets - #10gsyd, #1868gmel, #6gbri, #2gade, #7gper, #1ghob, #1gdar, #13acte)
-  #2  826332877457481728       8 (#1189 tweets - #1041gsyd, #60gmel, #40gbri, #3gade, #7gper, #11ghob, #4gdar, #23acte)
-  #3 1250331934242123776 8 (#1121 tweets - #288gsyd, #246gmel, #219gbri, #113gade, #152gper, #39ghob, #20gdar, #44acte)
-  #4 1423662808311287813       8 (#390 tweets - #108gsyd, #84gmel, #64gbri, #28gade, #52gper, #15ghob, #5gdar, #34acte)
-  #5 1183144981252280322           8 (#260 tweets - #12gsyd, #36gmel, #1gbri, #9gade, #1gper, #2ghob, #193gdar, #6acte)
-  #6  820431428835885059            8 (#250 tweets - #2gsyd, #214gmel, #8gbri, #4gade, #3gper, #8ghob, #1gdar, #10acte)
-  #7 1270672820792508417          8 (#198 tweets - #46gsyd, #56gmel, #37gbri, #20gade, #28gper, #4ghob, #1gdar, #6acte)
-  #8           233782487         8 (#146 tweets - #44gsyd, #39gmel, #11gbri, #19gade, #14gper, #8ghob, #1gdar, #10acte)
-  #9            84958532             8 (#80 tweets - #13gsyd, #16gmel, #32gbri, #3gade, #4gper, #5ghob, #3gdar, #4acte)
- #10  719139700318081024          7 (#2584 tweets - #403gsyd, #1547gmel, #91gbri, #47gade, #186gper, #84ghob, #226acte) 
+  #1 1429984556451389440         8 (#1908 tweets - #10gsyd, #1868gmel, #6gbri, #2gade, #7gper, #1ghob, #1gdar, #13acte)
+  #2            17285408       8 (#1189 tweets - #1041gsyd, #60gmel, #40gbri, #3gade, #7gper, #11ghob, #4gdar, #23acte)
+  #3  702290904460169216 8 (#1121 tweets - #288gsyd, #246gmel, #219gbri, #113gade, #152gper, #39ghob, #20gdar, #44acte)
+  #4            87188071       8 (#390 tweets - #108gsyd, #84gmel, #64gbri, #28gade, #52gper, #15ghob, #5gdar, #34acte)
+  #5          1361519083           8 (#260 tweets - #12gsyd, #36gmel, #1gbri, #9gade, #1gper, #2ghob, #193gdar, #6acte)
+  #6           502381727            8 (#250 tweets - #2gsyd, #214gmel, #8gbri, #4gade, #3gper, #8ghob, #1gdar, #10acte)
+  #7  921197448885886977          8 (#198 tweets - #46gsyd, #56gmel, #37gbri, #20gade, #28gper, #4ghob, #1gdar, #6acte)
+  #8           601712763         8 (#146 tweets - #44gsyd, #39gmel, #11gbri, #19gade, #14gper, #8ghob, #1gdar, #10acte)
+  #9          2647302752             8 (#80 tweets - #13gsyd, #16gmel, #32gbri, #3gade, #4gper, #5ghob, #3gdar, #4acte)
+ #10          3686036533          7 (#2584 tweets - #403gsyd, #1547gmel, #91gbri, #47gade, #186gper, #84ghob, #226acte) 
 
-Job ID           : 46225786
+Job ID           : 46232201
 Cluster          : spartan
 User/Project     : lachen1/comp90024
 Nodes            : 1
-Wall-clock time  : 00:01:24 / 00:15:00
+Wall-clock time  : 00:01:17 / 00:15:00
 
-Displaying overall resources usage from 2023-04-09 20:41:19 to 2023-04-09 20:42:43:
+Displaying overall resources usage from 2023-04-09 23:45:17 to 2023-04-09 23:46:34:
 
 NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
 
-spartan-bm010 : 
-                CPU# 1    : 80.8   (  75.6 /   5.2 /   0.9 /  18.3 ) 
-                CPU# 2    : 56.6   (  53.2 /   3.4 /   0.2 /  43.1 ) 
-                CPU# 3    : 58.3   (  54.8 /   3.5 /   0.1 /  41.6 ) 
-                CPU# 4    : 63.5   (  59.5 /   3.9 /   0.1 /  36.4 ) 
-                CPU# 5    : 55.8   (  52.9 /   3.0 /   0.1 /  44.0 ) 
-                CPU# 6    : 56.0   (  53.0 /   3.0 /   0.1 /  43.9 ) 
-                CPU# 7    : 56.1   (  52.9 /   3.2 /   0.1 /  43.8 ) 
-                CPU# 8    : 56.0   (  52.7 /   3.2 /   0.1 /  43.9 ) 
+spartan-bm012 : 
+                CPU# 1    : 69.6   (  65.8 /   3.8 /   0.0 /  30.4 ) 
+                CPU# 2    : 69.9   (  66.2 /   3.8 /   0.0 /  30.1 ) 
+                CPU# 3    : 69.4   (  65.9 /   3.5 /   0.0 /  30.6 ) 
+                CPU# 4    : 69.7   (  66.1 /   3.6 /   0.0 /  30.3 ) 
+                CPU# 5    : 91.2   (  86.3 /   4.8 /   0.0 /   8.8 ) 
+                CPU# 6    : 69.4   (  65.9 /   3.6 /   0.0 /  30.6 ) 
+                CPU# 7    : 69.2   (  65.9 /   3.2 /   0.0 /  30.8 ) 
+                CPU# 8    : 69.3   (  65.7 /   3.6 /   0.0 /  30.7 ) 
 
 
 Allocated CPUs            : 8    
@@ -68,7 +78,7 @@ Allocated CPUs            : 8
   CPUs with usage <50%    : 0    
   CPUs with usage >50%    : 8    
 
-Memory used (RAM)         : 3.5%  [1121MB of 32000MB]
+Memory used (RAM)         : 3.5%  [1118MB of 32000MB]
 
 --------------------------------------------
 
